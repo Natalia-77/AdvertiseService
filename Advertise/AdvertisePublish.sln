@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32328.378
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdvertisePudlish", "Advertise\AdvertisePudlish.csproj", "{63C9C01F-CA60-4F6D-82D4-668061352C57}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{06599A87-9526-4F20-8855-63278E5B4DA4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{63C9C01F-CA60-4F6D-82D4-668061352C57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63C9C01F-CA60-4F6D-82D4-668061352C57}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63C9C01F-CA60-4F6D-82D4-668061352C57}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63C9C01F-CA60-4F6D-82D4-668061352C57}.Release|Any CPU.Build.0 = Release|Any CPU
+		{06599A87-9526-4F20-8855-63278E5B4DA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06599A87-9526-4F20-8855-63278E5B4DA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06599A87-9526-4F20-8855-63278E5B4DA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06599A87-9526-4F20-8855-63278E5B4DA4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DDF0A133-E780-4551-AC62-8617E7168E89}
+	EndGlobalSection
+EndGlobal
