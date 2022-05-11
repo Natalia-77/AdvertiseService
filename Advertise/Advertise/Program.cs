@@ -1,6 +1,7 @@
 using AdvertisePublish.Mapper;
 using AdvertisePublish.Models;
 using AdvertisePublish.Validation;
+using AdvertisePudlish.Middleware;
 using AdvertisePudlish.Services.Abstractions;
 using AdvertisePudlish.Services.Implementation;
 using Domain;
@@ -97,6 +98,8 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseCustomExceptionHandler();
 
 app.UseCors(x => x
             .AllowAnyOrigin()

@@ -20,10 +20,12 @@ namespace AdvertisePublish.Mapper
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(x => x.Name));
 
             CreateMap<Advertise, AdvertiseViewModel>()
+                .ForMember(dest => dest.id, opt => opt.MapFrom(x => x.Id))
                 .ForMember(dest => dest.Title, opt => opt.MapFrom(x => x.Title))
                 .ForMember(dest => dest.Description, opt => opt.MapFrom(x => x.Description))
                 .ForMember(dest => dest.Price, opt => opt.MapFrom(x => x.Price))
-                .ForMember(dest => dest.DateCreate, opt => opt.MapFrom(x => x.DateCreate))
+                .ForMember(dest => dest.DateCreate, opt => opt
+                .MapFrom(x => new DateTime(x.DateCreate.Year, x.DateCreate.Month, x.DateCreate.Day,x.DateCreate.Hour,x.DateCreate.Minute,x.DateCreate.Second)))
                 .ForMember(dest => dest.ImageList, opt => opt.MapFrom(x => x.Images));          
 
             CreateMap< Image, ImageViewModel>()

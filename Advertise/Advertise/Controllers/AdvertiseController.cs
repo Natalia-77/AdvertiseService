@@ -3,14 +3,11 @@ using AdvertisePudlish.Exceptions;
 using AdvertisePudlish.Helper;
 using AdvertisePudlish.Models;
 using AdvertisePudlish.Services.Abstractions;
-using AdvertisePudlish.Services.Implementation;
 using AutoMapper;
 using Domain;
 using Domain.Entities;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Swashbuckle.AspNetCore.Annotations;
 using System.Drawing.Imaging;
 
 namespace AdvertisePudlish.Controllers
@@ -73,6 +70,11 @@ namespace AdvertisePudlish.Controllers
             var res = await _context.Advertises.Include(i => i.Images.Take(1))
                      .Select(item => _mapper.Map<AdvertiseViewModel>(item)).ToListAsync();
 
+            if (res == null)
+            {
+                throw new NotFoundException("There is no item for display");
+            }
+
             int count = 10;
             decimal maxPageNumber = (Math.Ceiling((decimal)res.Count / count));
             int currentPage = pageParams.Page;
@@ -95,11 +97,11 @@ namespace AdvertisePudlish.Controllers
         }
 
         /// <summary>
-        /// Get list items sorted by descending 
+        /// Get list items sorted by descending price
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [Route("descendingPrice")]
+        [Route("descending/price")]
         public async Task<IActionResult> DescendingByPrice()
         {
             var res = await _context.Advertises.Include(i => i.Images.Take(1))
@@ -110,11 +112,11 @@ namespace AdvertisePudlish.Controllers
         }
 
         /// <summary>
-        /// Get list items sorted by descending 
+        /// Get list items sorted by ascending price
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [Route("ascendingPrice")]
+        [Route("ascending/price")]
         public async Task<IActionResult> AscendingByPrice()
         {
             var res = await _context.Advertises.Include(i => i.Images.Take(1)).OrderBy(u=>u.Price)
@@ -130,12 +132,17 @@ namespace AdvertisePudlish.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("title")]
-        public async Task<IActionResult> GetItemByTitle([FromQuery] OperationType choise)
+        public IActionResult GetItemByTitle([FromQuery] OperationType choise)
         {
             string search = choise.Title ?? "";
-            var res2 = _context.Advertises.Where(x => x.Title.Contains(search)).Include(i => i.Images)
+            var resTitle = _context.Advertises.Where(x => x.Title.Contains(search)).Include(i => i.Images)
                 .Select(item => _mapper.Map<AdvertiseViewModel>(item));
-            return Ok(res2);
+
+            if (String.IsNullOrEmpty(search))
+            {
+                throw new NotFoundException("Title field is empty");
+            }
+            return Ok(resTitle);
         }
 
         /// <summary>
@@ -148,7 +155,42 @@ namespace AdvertisePudlish.Controllers
         public async Task<IActionResult> GetItemById(int id)
         {
             var res = await _context.Advertises.Where(c => c.Id == id).Include(i => i.Images)
-                     .Select(item => _mapper.Map<AdvertiseViewModel>(item)).FirstAsync();
+                     .Select(item => _mapper.Map<AdvertiseViewModel>(item)).FirstOrDefaultAsync();
+
+            if(res == null)
+            {
+                throw new NotFoundException("Not found item with such Id");
+            }
+            return Ok(res);
+
+        }
+
+        /// <summary>
+        /// Sorted item lisy by ascending date
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("ascending/date")]
+        public async Task<IActionResult> AscendingByDate()
+        {
+            var res = await _context.Advertises.Include(i => i.Images.Take(1))
+                     .Select(item => _mapper.Map<AdvertiseViewModel>(item)).ToListAsync();
+            res.Sort((x, y) => x.DateCreate.CompareTo(y.DateCreate));
+            return Ok(res);
+
+        }
+
+        /// <summary>
+        /// Sorted item lisy by descending date
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("descending/date")]
+        public async Task<IActionResult> DescendingByDate()
+        {
+            var res = await _context.Advertises.Include(i => i.Images.Take(1))
+                     .Select(item => _mapper.Map<AdvertiseViewModel>(item)).ToListAsync();
+            res.Sort(new DateComparer());
             return Ok(res);
 
         }

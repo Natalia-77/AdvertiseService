@@ -2,16 +2,15 @@
 
 namespace AdvertisePudlish.Helper
 {
-    public  class PriceComparer : IComparer<AdvertiseViewModel>
-    {       
-
+    public class DateComparer : IComparer<AdvertiseViewModel>
+    {
         public int Compare(AdvertiseViewModel x, AdvertiseViewModel y)
         {
-            if (x.Price < y.Price)
+            if (x.DateCreate < y.DateCreate)
             {
                 return 1;
             }
-            else if (x.Price > y.Price)
+            else if (x.DateCreate > y.DateCreate)
             {
                 return -1;
             }

@@ -4,7 +4,6 @@ namespace AdvertisePublish.Models
 {
     public class CreateAdvertiseViewModel
     {
-       // private DateTime dateCreate = DateTime.UtcNow.ToString("MM/dd/yyyy HH:mm");
 
         //public int Id { get; set; }
         public string Title { get; set; }
