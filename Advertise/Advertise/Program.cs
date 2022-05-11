@@ -54,9 +54,7 @@ builder.Services.AddSwaggerGen((SwaggerGenOptions o) =>{
         Title = "Advertise API example"
     });
 
-    //var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-    //var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-    //o.IncludeXmlComments(xmlPath);
+    
 }); 
 
 builder.Services.AddCors();

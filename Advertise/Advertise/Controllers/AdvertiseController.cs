@@ -34,11 +34,12 @@ namespace AdvertisePudlish.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("create")]
-        public async Task<IActionResult> CreateAdvertiseAsync([FromBody] CreateAdvertiseViewModel model)
+        public IActionResult CreateAdvertise([FromBody] CreateAdvertiseViewModel model)
         {
+
             var images = new List<Image>();
             var adv = _mapper.Map<Advertise>(model);
-            
+
             foreach (var item in model.Images)
             {
                 var img = _imageconverter.FromBase64StringToImage(item.Name);
@@ -47,16 +48,25 @@ namespace AdvertisePudlish.Controllers
                 img.Save(dir, ImageFormat.Jpeg);
 
                 var im = _mapper.Map<Image>(item);
-                im.Name = randomFilename;
-                im.Advertise = adv;
-                images.Add(im);
+                if (im != null)
+                {
+                    im.Name = randomFilename;
+                    im.Advertise = adv;
+                    images.Add(im);
+                }
+
             }
 
-            adv.Images = images;
+            if (adv != null)
+            {
+                adv.Images = images;
+            }
+           
             _context.Images.AddRange(images);
+
             _context.SaveChanges();
 
-            return Ok(new { adv.Id });
+            return Ok(new { message = "Success" });
         }
 
         /// <summary>
@@ -80,7 +90,7 @@ namespace AdvertisePudlish.Controllers
             int currentPage = pageParams.Page;
             if (currentPage <= 0 || currentPage > maxPageNumber)
             {
-                pageParams.Page = 1;                              
+                pageParams.Page = 1;
             }
 
             return Ok(new
@@ -93,7 +103,7 @@ namespace AdvertisePudlish.Controllers
                     total_items = res.Count,
                 }
 
-            });            
+            });
         }
 
         /// <summary>
@@ -108,7 +118,7 @@ namespace AdvertisePudlish.Controllers
                      .Select(item => _mapper.Map<AdvertiseViewModel>(item)).ToListAsync();
             res.Sort(new PriceComparer());
             return Ok(res);
-            
+
         }
 
         /// <summary>
@@ -119,8 +129,8 @@ namespace AdvertisePudlish.Controllers
         [Route("ascending/price")]
         public async Task<IActionResult> AscendingByPrice()
         {
-            var res = await _context.Advertises.Include(i => i.Images.Take(1)).OrderBy(u=>u.Price)
-                     .Select(item => _mapper.Map<AdvertiseViewModel>(item)).ToListAsync();           
+            var res = await _context.Advertises.Include(i => i.Images.Take(1)).OrderBy(u => u.Price)
+                     .Select(item => _mapper.Map<AdvertiseViewModel>(item)).ToListAsync();
             return Ok(res);
 
         }
@@ -157,7 +167,7 @@ namespace AdvertisePudlish.Controllers
             var res = await _context.Advertises.Where(c => c.Id == id).Include(i => i.Images)
                      .Select(item => _mapper.Map<AdvertiseViewModel>(item)).FirstOrDefaultAsync();
 
-            if(res == null)
+            if (res == null)
             {
                 throw new NotFoundException("Not found item with such Id");
             }

@@ -41,7 +41,7 @@ namespace AdvertisePudlish.Middleware
                 
 
                 default:
-                    result = JsonConvert.SerializeObject(new { error = exception.Message });
+                    result = JsonConvert.SerializeObject(new { errorss = exception.Message });
                     break;
             }
 
