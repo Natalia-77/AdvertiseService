@@ -13,6 +13,7 @@ using System.Drawing.Imaging;
 namespace AdvertisePudlish.Controllers
 {
     [Route("api/[controller]")]
+    [Produces("application/json")]
     [ApiController]
     public class AdvertiseController : ControllerBase
     {
@@ -31,14 +32,23 @@ namespace AdvertisePudlish.Controllers
         /// Add new advertise
         /// </summary>
         /// <param name="model"></param>
-        /// <returns></returns>
+        /// <response code="200">Returns the newly created item</response>
+        /// <response code="400">If not valid firlds does exist into boby</response>
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [Route("create")]
         public IActionResult CreateAdvertise([FromBody] CreateAdvertiseViewModel model)
         {
+            var newItem = new Advertise();
+            newItem.Title = model.Title;
+            newItem.Description = model.Description;
+            newItem.Price = model.Price;
+           
+            _context.Advertises.Add(newItem);
+            _context.SaveChanges();
 
             var images = new List<Image>();
-            var adv = _mapper.Map<Advertise>(model);
 
             foreach (var item in model.Images)
             {
@@ -47,33 +57,27 @@ namespace AdvertisePudlish.Controllers
                 var dir = Path.Combine(Directory.GetCurrentDirectory(), "images", randomFilename);
                 img.Save(dir, ImageFormat.Jpeg);
 
-                var im = _mapper.Map<Image>(item);
-                if (im != null)
-                {
-                    im.Name = randomFilename;
-                    im.Advertise = adv;
-                    images.Add(im);
-                }
 
+                Image pImage = new Image();
+                pImage.Name = randomFilename;
+                pImage.Advertise = newItem;
+                
+                images.Add(pImage);
             }
-
-            if (adv != null)
-            {
-                adv.Images = images;
-            }
-           
             _context.Images.AddRange(images);
-
             _context.SaveChanges();
-
+            
             return Ok(new { message = "Success" });
         }
 
         /// <summary>
         /// Get list all of advertise
         /// </summary>
-        /// <returns></returns>
+        /// <response code="200">Returns the list of items</response>
+        /// <response code="400">If item is null</response>
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [Route("list")]
         public async Task<IActionResult> GetItemList([FromQuery] PageParamsModel pageParams)
         {
@@ -109,8 +113,11 @@ namespace AdvertisePudlish.Controllers
         /// <summary>
         /// Get list items sorted by descending price
         /// </summary>
-        /// <returns></returns>
+        /// <response code="200">Returns the list of items</response>
+        /// <response code="400">If item search data is null</response>
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [Route("descending/price")]
         public async Task<IActionResult> DescendingByPrice()
         {
@@ -124,8 +131,11 @@ namespace AdvertisePudlish.Controllers
         /// <summary>
         /// Get list items sorted by ascending price
         /// </summary>
-        /// <returns></returns>
+        /// <response code="200">Returns the list of items</response>
+        /// <response code="400">If item search data is null</response>
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [Route("ascending/price")]
         public async Task<IActionResult> AscendingByPrice()
         {
@@ -139,8 +149,11 @@ namespace AdvertisePudlish.Controllers
         /// Search advertise by title
         /// </summary>
         /// <param name="choise"></param>
-        /// <returns></returns>
+        /// <response code="200">Returns the list of items</response>
+        /// <response code="400">If item search data is null</response>
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [Route("title")]
         public IActionResult GetItemByTitle([FromQuery] OperationType choise)
         {
@@ -159,8 +172,11 @@ namespace AdvertisePudlish.Controllers
         /// Search advertise by Id
         /// </summary>
         /// <param name="id"></param>
-        /// <returns></returns>
+        /// <response code="200">Returns the list of items</response>
+        /// <response code="400">If item search data is null</response>
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [Route("id")]
         public async Task<IActionResult> GetItemById(int id)
         {
@@ -178,8 +194,11 @@ namespace AdvertisePudlish.Controllers
         /// <summary>
         /// Sorted item lisy by ascending date
         /// </summary>
-        /// <returns></returns>
+        /// <response code="200">Returns the list of items</response>
+        /// <response code="400">If item search data is null</response>
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [Route("ascending/date")]
         public async Task<IActionResult> AscendingByDate()
         {
@@ -193,8 +212,11 @@ namespace AdvertisePudlish.Controllers
         /// <summary>
         /// Sorted item lisy by descending date
         /// </summary>
-        /// <returns></returns>
+        /// <response code="200">Returns the list of items</response>
+        /// <response code="400">If item search data is null</response>
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [Route("descending/date")]
         public async Task<IActionResult> DescendingByDate()
         {

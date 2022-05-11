@@ -46,15 +46,16 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
 builder.Services.AddSwaggerGen((SwaggerGenOptions o) =>{
 
 
-    o.SwaggerDoc("v1", new OpenApiInfo   {
+    o.SwaggerDoc("v1", new OpenApiInfo
+    {
 
 
         Description = "Test project",
         Version = "v1",
         Title = "Advertise API example"
-    });
-
-    
+    });   
+    var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    o.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
 }); 
 
 builder.Services.AddCors();
@@ -73,8 +74,7 @@ app.UseSwaggerUI((SwaggerUIOptions c) =>
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Advertise service");
 });
 
-
-//app.UseStaticFiles();
+app.UseStaticFiles();
 
 string folderName = "images";
 
