@@ -98,7 +98,7 @@ namespace AdvertisePudlish.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [Route("descending")]
+        [Route("descendingPrice")]
         public async Task<IActionResult> DescendingByPrice()
         {
             var res = await _context.Advertises.Include(i => i.Images.Take(1))
@@ -113,22 +113,11 @@ namespace AdvertisePudlish.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [Route("ascending")]
+        [Route("ascendingPrice")]
         public async Task<IActionResult> AscendingByPrice()
         {
-            var res = await _context.Advertises.Include(i => i.Images.Take(1))
-                     .Select(item => _mapper.Map<AdvertiseViewModel>(item)).ToListAsync();
-            int c = 0;
-            for (int i = 0; i < res.Count-1; i++)
-            {
-                if (res[i].Price > res[i+1].Price)
-                {
-                    c = res[i].Price;
-                    res[i].Price = res[i+1].Price;
-                    res[i+1].Price = c;
-                }                
-                
-            }
+            var res = await _context.Advertises.Include(i => i.Images.Take(1)).OrderBy(u=>u.Price)
+                     .Select(item => _mapper.Map<AdvertiseViewModel>(item)).ToListAsync();           
             return Ok(res);
 
         }
@@ -139,7 +128,7 @@ namespace AdvertisePudlish.Controllers
         /// <param name="choise"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("Title")]
+        [Route("title")]
         public async Task<IActionResult> GetItemByTitle([FromQuery] OperationType choise)
         {
             string search = choise.Title ?? "";
