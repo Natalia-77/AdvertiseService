@@ -41,6 +41,7 @@ namespace AdvertisePudlish.Controllers
         {
             var images = new List<Image>();
             var adv = _mapper.Map<Advertise>(model);
+            
             foreach (var item in model.Images)
             {
                 var img = _imageconverter.FromBase64StringToImage(item.Name);

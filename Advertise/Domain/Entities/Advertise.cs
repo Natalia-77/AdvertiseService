@@ -14,6 +14,7 @@ namespace Domain.Entities
         public string  Title { get; set; }
         public string Description { get; set; }
         public int Price { get; set; }
+        public DateTime DateCreate { get; set; }
         public ICollection <Image> Images { get; set; }
     }
 }

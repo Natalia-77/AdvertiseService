@@ -18,6 +18,7 @@ namespace Domain.ModelBuilderConfig
             builder.Property(t => t.Title).HasMaxLength(200).IsRequired();
             builder.Property(d => d.Description).HasMaxLength(1000).IsRequired();
             builder.Property(p => p.Price).IsRequired();
+            builder.Property(date => date.DateCreate).IsRequired().HasDefaultValue(DateTime.UtcNow.ToShortDateString());
             builder.HasMany(im => im.Images).WithOne(u=>u.Advertise).HasForeignKey(r=>r.AdvertiseId);
         }
     }

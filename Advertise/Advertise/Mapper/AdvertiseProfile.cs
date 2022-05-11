@@ -13,6 +13,7 @@ namespace AdvertisePublish.Mapper
                 .ForMember(dest => dest.Title, opt => opt.MapFrom(x => x.Title))
                 .ForMember(dest => dest.Description, opt => opt.MapFrom(x => x.Description))
                 .ForMember(dest => dest.Price, opt => opt.MapFrom(x => x.Price))
+                .ForMember(dest => dest.DateCreate, opt => opt.MapFrom(x => x.DateCreate))
                 .ForMember(dest => dest.Images, opt => opt.MapFrom(x => x.Images));
 
             CreateMap<ImageViewModel, Image>()
@@ -22,6 +23,7 @@ namespace AdvertisePublish.Mapper
                 .ForMember(dest => dest.Title, opt => opt.MapFrom(x => x.Title))
                 .ForMember(dest => dest.Description, opt => opt.MapFrom(x => x.Description))
                 .ForMember(dest => dest.Price, opt => opt.MapFrom(x => x.Price))
+                .ForMember(dest => dest.DateCreate, opt => opt.MapFrom(x => x.DateCreate))
                 .ForMember(dest => dest.ImageList, opt => opt.MapFrom(x => x.Images));          
 
             CreateMap< Image, ImageViewModel>()
