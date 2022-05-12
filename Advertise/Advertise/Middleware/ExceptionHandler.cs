@@ -27,7 +27,7 @@ namespace AdvertisePudlish.Middleware
 
         private Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
-            var code = HttpStatusCode.InternalServerError;
+            var code = HttpStatusCode.BadRequest;
 
             var result = string.Empty;
 

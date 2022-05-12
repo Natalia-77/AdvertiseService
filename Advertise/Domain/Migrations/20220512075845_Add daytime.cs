@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Domain.Migrations
 {
-    public partial class AddDate : Migration
+    public partial class Adddaytime : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,19 +14,17 @@ namespace Domain.Migrations
                 table: "tblAdvertise",
                 type: "timestamp without time zone",
                 nullable: false,
-                defaultValue: new DateTime(DateTime.Now.Year,DateTime.Now.Month,DateTime.Now.Day));
+                defaultValue: new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day));
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<DateTime>(
-                name: "DateCreate",
+                 name: "DateCreate",
                 table: "tblAdvertise",
                 type: "timestamp without time zone",
                 nullable: false,
-                oldClrType: typeof(DateTime),
-                oldType: "timestamp with time zone",
-                oldDefaultValue: new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day));
+                defaultValue: new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day));
         }
     }
 }
